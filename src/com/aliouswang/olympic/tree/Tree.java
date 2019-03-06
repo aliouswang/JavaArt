@@ -25,4 +25,10 @@ public class Tree {
         }else return find(key, startNode.right);
     }
 
+    public void insert(int key, int value) {
+        if (root == null) {
+            root = new Node(key, value);
+        }
+    }
+
 }

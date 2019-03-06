@@ -11,6 +11,9 @@ public class Node {
     public Node(int key, int value) {
         this.key = key;
         this.value = value;
+
+        left = null;
+        right = null;
     }
 
 }
