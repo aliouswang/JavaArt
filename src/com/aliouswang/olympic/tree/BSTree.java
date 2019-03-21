@@ -27,11 +27,11 @@ public class BSTree<T extends Comparable<T>>{
         preOrder(mRoot);
     }
 
-    private void preOrder(BSTNode<T> node) {
-        if (node == null) return;
-        Log.d(node.data + " ");
-        preOrder(node.left);
-        preOrder(node.right);
+    private void preOrder(BSTNode<T> tree) {
+        if (tree == null) return;
+        Log.d(tree.data + " ");
+        preOrder(tree.left);
+        preOrder(tree.right);
     }
 
     /**
@@ -41,11 +41,11 @@ public class BSTree<T extends Comparable<T>>{
         inOrder(mRoot);
     }
 
-    private void inOrder(BSTNode<T> node) {
-        if (node != null) {
-            inOrder(node.left);
-            Log.d(node.data + " ");
-            inOrder(node.right);
+    private void inOrder(BSTNode<T> tree) {
+        if (tree != null) {
+            inOrder(tree.left);
+            Log.d(tree.data + " ");
+            inOrder(tree.right);
         }
     }
 
@@ -56,11 +56,43 @@ public class BSTree<T extends Comparable<T>>{
         postOrder(mRoot);
     }
 
-    private void postOrder(BSTNode<T> node) {
-        if (node != null) {
-            postOrder(node.left);
-            postOrder(node.right);
-            Log.d(node.data + " ");
+    private void postOrder(BSTNode<T> tree) {
+        if (tree != null) {
+            postOrder(tree.left);
+            postOrder(tree.right);
+            Log.d(tree.data + " ");
         }
     }
+
+    public BSTNode<T> search(T data) {
+        return search(data, mRoot);
+    }
+
+    private BSTNode<T> search(T data, BSTNode<T> tree) {
+        if (tree == null) return null;
+        int cmp = tree.data.compareTo(data);
+        if (cmp == 0) {
+            return tree;
+        } else if (cmp < 0) {
+            return search(data, tree.left);
+        } else {
+            return search(data, tree.right);
+        }
+    }
+
+    private BSTNode<T> searchWithoutRecursion(T data, BSTNode<T> tree) {
+        BSTNode<T> currentRoot = tree;
+        while (currentRoot != null) {
+            int cmp = currentRoot.data.compareTo(data);
+            if (cmp == 0) {
+                return currentRoot;
+            } else if (cmp < 0) {
+                currentRoot = currentRoot.left;
+            } else {
+                currentRoot = currentRoot.right;
+            }
+        }
+        return null;
+    }
+
 }
