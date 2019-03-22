@@ -185,4 +185,94 @@ public class BSTree<T extends Comparable<T>>{
         return parent;
     }
 
+
+    public BSTNode<T> successor(BSTNode<T> tree) {
+        if (tree == null) return null;
+        if (tree.right != null) return min(tree.right);
+        BSTNode<T> parent = tree.parent;
+        while (parent != null && parent.right == tree) {
+            tree = parent;
+            parent = parent.parent;
+        }
+        return parent;
+    }
+
+    /**
+     * insert new node, find insert pos , this pos is must be a leaf!!!
+     *
+     * @param key
+     * @return
+     */
+    public BSTNode<T> insert(T key) {
+        if (mRoot == null) {
+            mRoot = new BSTNode<>(key, null, null, null);
+            return mRoot;
+        }
+        BSTNode<T> cur = mRoot;
+        BSTNode<T> preParent = null;
+        while (cur != null) {
+            int cmp = cur.data.compareTo(key);
+            if (cmp == 0) {
+                // already exist
+                return cur;
+            } else if (cmp > 0) {
+                preParent = cur;
+                cur = cur.left;
+                if (cur == null) {
+                    cur = new BSTNode<>(key, null, null, preParent);
+                    preParent.left = cur;
+                    break;
+                }
+            } else {
+                preParent = cur;
+                cur = cur.right;
+                if (cur == null) {
+                    cur = new BSTNode<>(key, null, null, preParent);
+                    preParent.right = cur;
+                    break;
+                }
+            }
+        }
+        return cur;
+    }
+
+    /**
+     * 删除对应值的节点
+     *
+     * @param key
+     * @return
+     */
+    public BSTNode<T> remove(T key) {
+        BSTNode<T> node = search(key);
+        if (node == null) return null;
+        // 如果要删除的节点 左右孩子都有，则获取到该节点的后继节点， 然后交换二个节点的值，这样就可以只用删除后继节点的位置就可以了
+        // 后继节点因为 至多只会存在一个孩子，所以删除比较容易
+        if (node.left != null && node.right != null) {
+            BSTNode<T> successor = successor(node);
+            node.data = successor.data;
+            node = successor;
+        }
+
+        BSTNode<T> child = null;
+        if (node.left != null) {
+            child = node.left;
+        } else if (node.right != null){
+            child = node.right;
+        }
+
+        BSTNode<T> parent = node.parent;
+
+        if (child != null) {
+            child.parent = parent;
+        }
+        if (parent == null) {
+            mRoot = child;
+        } else if (parent.left == node) {
+            parent.left = child;
+        } else if (parent.right == node) {
+            parent.right = child;
+        }
+        return node;
+    }
+
 }
