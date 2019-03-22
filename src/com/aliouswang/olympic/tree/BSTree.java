@@ -64,10 +64,23 @@ public class BSTree<T extends Comparable<T>>{
         }
     }
 
+    /**
+     * search the BSTNode
+     *
+     * @param data
+     * @return
+     */
     public BSTNode<T> search(T data) {
         return search(data, mRoot);
     }
 
+    /**
+     * search with recursion
+     *
+     * @param data
+     * @param tree
+     * @return
+     */
     private BSTNode<T> search(T data, BSTNode<T> tree) {
         if (tree == null) return null;
         int cmp = tree.data.compareTo(data);
@@ -80,6 +93,13 @@ public class BSTree<T extends Comparable<T>>{
         }
     }
 
+    /**
+     * search without recursion
+     *
+     * @param data
+     * @param tree
+     * @return
+     */
     private BSTNode<T> searchWithoutRecursion(T data, BSTNode<T> tree) {
         BSTNode<T> currentRoot = tree;
         while (currentRoot != null) {
@@ -93,6 +113,76 @@ public class BSTree<T extends Comparable<T>>{
             }
         }
         return null;
+    }
+
+    /**
+     * find max node
+     *
+     * @return
+     */
+    public BSTNode<T> max() {
+        return max(mRoot);
+    }
+
+    private BSTNode<T> max(BSTNode<T> tree) {
+        BSTNode<T> node = tree;
+        BSTNode<T> result = null;
+        while (node != null) {
+            if (node.right == null) {
+                result = node;
+                break;
+            } else {
+                node = node.right;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * find min node
+     *
+     * @return
+     */
+    public BSTNode<T> min() {
+        return min(mRoot);
+    }
+
+    public BSTNode<T> min(BSTNode<T> tree) {
+        BSTNode<T> node = tree;
+        BSTNode<T> result = null;
+        while (node != null) {
+            if (node.left == null) {
+                result = node;
+                break;
+            } else {
+                node = node.left;
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * 查找node的前驱，左子树的最大值
+     *
+     * @param targetNode
+     * @return
+     */
+    public BSTNode<T> predecessor(BSTNode<T> targetNode) {
+        if (targetNode == null) return null;
+        // 如果有左子树，则寻找左子树的最大节点
+        if (targetNode.left != null) {
+            return max(targetNode.left);
+        }
+        // 如果没有左子树，有二种情况，
+        // 1. 父节点的右子树，则前驱是父节点
+        // 2. 父节点的左子树，则继续向上寻找，直到找到 节点是右节点 的时候，该父节点就是我们的答案
+        BSTNode<T> parent = targetNode.parent;
+        while (parent != null && targetNode == parent.left) {
+            targetNode = parent;
+            parent = parent.parent;
+        }
+        return parent;
     }
 
 }
