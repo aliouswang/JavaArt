@@ -1,0 +1,13 @@
+1:<?xml version="1.0" encoding="UTF-8"?>
+2:<module type="JAVA_MODULE" version="4">
+3:  <component name="NewModuleRootManager" inherit-compiler-output="true">
+4:    <exclude-output />
+5:    <content url="file://$MODULE_DIR$">
+6:      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+7:    </content>
+8:    <orderEntry type="inheritedJdk" />
+9:    <orderEntry type="sourceFolder" forTests="false" />
+10:    <orderEntry type="library" name="okio-2.2.2" level="project" />
+11:    <orderEntry type="library" name="okio-1.17.3" level="project" />
+12:  </component>
+13:</module>
