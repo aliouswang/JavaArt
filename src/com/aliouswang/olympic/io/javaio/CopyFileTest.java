@@ -82,15 +82,17 @@ public class CopyFileTest {
     public static void copyWithNioDirect() throws IOException{
         FileChannel fileChannel = new FileInputStream(new File(BASE_PATH + "ideaI.dmg"))
                 .getChannel();
-        ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+//        ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
         FileChannel fileChannel2 = new FileOutputStream(
                 new File(BASE_PATH + "ideaI.copy4")
         ).getChannel();
-        while ((fileChannel.read(buffer)) != -1) {
-            buffer.flip();
-            fileChannel2.write(buffer);
-            buffer.clear();
-        }
+//        while ((fileChannel.read(buffer)) != -1) {
+//            buffer.flip();
+//            fileChannel2.write(buffer);
+//            buffer.clear();
+//        }
+
+        fileChannel.transferTo(0, fileChannel.size(), fileChannel2);
     }
 
 }
