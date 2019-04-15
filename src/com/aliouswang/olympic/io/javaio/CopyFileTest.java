@@ -5,6 +5,7 @@ import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
 
+import javax.swing.text.Segment;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -15,7 +16,6 @@ public class CopyFileTest {
 
     public static void main(String[] args) throws IOException {
         //parpare
-
 
         long time = System.currentTimeMillis();
 //        copyWithFile();
@@ -34,19 +34,38 @@ public class CopyFileTest {
 //        Log.d("time:" + (System.currentTimeMillis() - time));
 //        time = System.currentTimeMillis();
 
-        copyWithOkio();
+//        copyWithOkio();
         Log.d("time:" + (System.currentTimeMillis() - time));
+
+        copyWithFile();
+        Log.d("FileInputStream take time:" + (System.currentTimeMillis() - time));
+        time = System.currentTimeMillis();
+
+        copyWithBuffer();
+        Log.d("BufferedInputStream take time:" + (System.currentTimeMillis() - time));
+        time = System.currentTimeMillis();
+
+        copyWithNIO();
+        Log.d("nio take time:" + (System.currentTimeMillis() - time));
+        time = System.currentTimeMillis();
+
+        copyWithNioDirect();
+        Log.d("nio direct take time:" + (System.currentTimeMillis() - time));
+        time = System.currentTimeMillis();
+
+        copyOkio();
+        Log.d("okio take time:" + (System.currentTimeMillis() - time));
     }
 
     public static void copyWithFile() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(new File(BASE_PATH + "ideaI.dmg"));
+        FileInputStream fileInputStream = new FileInputStream(new File(BASE_PATH + "WPS2019.dmg"));
         FileOutputStream fileOutputStream = new FileOutputStream(
-                new File(BASE_PATH + "ideal.copy1")
+                new File(BASE_PATH + "wps.copy1")
         );
         byte[] bytes = new byte[1024];
         int read = 0;
         while ((read = fileInputStream.read(bytes)) != -1) {
-            fileOutputStream.write(read);
+            fileOutputStream.write(bytes,0 ,read);
         }
         fileOutputStream.flush();
 
@@ -55,14 +74,14 @@ public class CopyFileTest {
     }
 
     public static void copyWithBuffer() throws IOException{
-        BufferedInputStream fileInputStream = new BufferedInputStream(new FileInputStream(new File(BASE_PATH + "ideaI.dmg")));
+        BufferedInputStream fileInputStream = new BufferedInputStream(new FileInputStream(new File(BASE_PATH + "WPS2019.dmg")));
         BufferedOutputStream fileOutputStream = new BufferedOutputStream(new FileOutputStream(
-                new File(BASE_PATH + "ideal.copy2")
+                new File(BASE_PATH + "wps.copy2")
         ));
-        byte[] bytes = new byte[1024];
+        byte[] bytes = new byte[8192];
         int read = 0;
         while ((read = fileInputStream.read(bytes)) != -1) {
-            fileOutputStream.write(read);
+            fileOutputStream.write(bytes, 0, read);
         }
         fileOutputStream.flush();
 
@@ -71,11 +90,11 @@ public class CopyFileTest {
     }
 
     public static void copyWithNIO() throws IOException{
-        FileChannel fileChannel = new FileInputStream(new File(BASE_PATH + "ideaI.dmg"))
+        FileChannel fileChannel = new FileInputStream(new File(BASE_PATH + "WPS2019.dmg"))
                 .getChannel();
         ByteBuffer buffer = ByteBuffer.allocate(1024);
         FileChannel fileChannel2 = new FileOutputStream(
-                new File(BASE_PATH + "ideaI.copy3")
+                new File(BASE_PATH + "wps.copy3")
         ).getChannel();
         while ((fileChannel.read(buffer)) != -1) {
             buffer.flip();
@@ -86,27 +105,19 @@ public class CopyFileTest {
     }
 
     public static void copyWithNioDirect() throws IOException{
-        FileChannel fileChannel = new FileInputStream(new File(BASE_PATH + "ideaI.dmg"))
+        FileChannel fileChannel = new FileInputStream(new File(BASE_PATH + "WPS2019.dmg"))
                 .getChannel();
-//        ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
         FileChannel fileChannel2 = new FileOutputStream(
-                new File(BASE_PATH + "ideaI.copy4")
+                new File(BASE_PATH + "wps.copy4")
         ).getChannel();
-//        while ((fileChannel.read(buffer)) != -1) {
-//            buffer.flip();
-//            fileChannel2.write(buffer);
-//            buffer.clear();
-//        }
-
         fileChannel.transferTo(0, fileChannel.size(), fileChannel2);
     }
 
-    public static void copyWithOkio() throws IOException{
+    public static void copyOkio() throws IOException {
         BufferedSource bufferedSource = Okio.buffer(Okio.source(new File(BASE_PATH + "ideaI.dmg")));
         BufferedSink bufferedSink = Okio.buffer(Okio.sink(new File(BASE_PATH + "ideaI.copy5")));
         bufferedSource.readAll(bufferedSink);
         bufferedSink.flush();
 
     }
-
 }

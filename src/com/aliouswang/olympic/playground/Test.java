@@ -2,6 +2,8 @@ package com.aliouswang.olympic.playground;
 
 import com.aliouswang.olympic.util.Log;
 
+import java.util.Stack;
+
 public class Test {
 
     public static void main(String[] args) {
@@ -15,6 +17,9 @@ public class Test {
         final int TERMINATED =  3 << COUNT_BITS;
 
         Log.d(TIDYING + "," + TERMINATED);
+
+
+        Stack<String> stack = new Stack<>();
     }
 
 }
