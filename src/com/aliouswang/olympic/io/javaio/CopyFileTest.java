@@ -1,6 +1,9 @@
 package com.aliouswang.olympic.io.javaio;
 
 import com.aliouswang.olympic.util.Log;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -15,21 +18,24 @@ public class CopyFileTest {
 
 
         long time = System.currentTimeMillis();
-        copyWithFile();
-        Log.d("time:" + (System.currentTimeMillis() - time));
-        time = System.currentTimeMillis();
+//        copyWithFile();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithBuffer();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithNIO();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithNioDirect();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
 
-        copyWithBuffer();
+        copyWithOkio();
         Log.d("time:" + (System.currentTimeMillis() - time));
-        time = System.currentTimeMillis();
-
-        copyWithNIO();
-        Log.d("time:" + (System.currentTimeMillis() - time));
-        time = System.currentTimeMillis();
-
-        copyWithNioDirect();
-        Log.d("time:" + (System.currentTimeMillis() - time));
-        time = System.currentTimeMillis();
     }
 
     public static void copyWithFile() throws IOException {
@@ -93,6 +99,14 @@ public class CopyFileTest {
 //        }
 
         fileChannel.transferTo(0, fileChannel.size(), fileChannel2);
+    }
+
+    public static void copyWithOkio() throws IOException{
+        BufferedSource bufferedSource = Okio.buffer(Okio.source(new File(BASE_PATH + "ideaI.dmg")));
+        BufferedSink bufferedSink = Okio.buffer(Okio.sink(new File(BASE_PATH + "ideaI.copy5")));
+        bufferedSource.readAll(bufferedSink);
+        bufferedSink.flush();
+
     }
 
 }
