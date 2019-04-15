@@ -31,7 +31,6 @@ public class StackDemo {
                 numStack.push(result);
             }
         }
-<<<<<<< HEAD
         return numStack.pop();
     }
 
@@ -43,9 +42,6 @@ public class StackDemo {
         } else if (symbol == '*') {
             return a * b;
         } else return a / b;
-=======
-        return 0;
->>>>>>> 4d5f49eb182ed0bc3a13a22a1cc31811aca853de
     }
 
 }
