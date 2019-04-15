@@ -38,9 +38,10 @@ public class Okio_kata {
         int intValue = buffer.readInt();
         byte byteValue = buffer.readByte();
         long longValue = buffer.readLong();
-        buffer.writeUtf8("Hello end!");
+        String utf8 = buffer.readUtf8();
 
-        System.out.println("str:" + string + "; int:" + intValue + ";byte:" + byteValue + "; long:" + longValue);
+        System.out.println("str:" + string + "; int:" + intValue + ";byte:" + byteValue + "; long:" + longValue
+        + "; utf8:" + utf8);
 
         source.close();
     }
