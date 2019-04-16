@@ -1,7 +1,9 @@
 package com.aliouswang.olympic.io.javaio;
 
 import com.aliouswang.olympic.util.Log;
-import okio.*;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
 
 import javax.swing.text.Segment;
 import java.io.*;
@@ -16,6 +18,25 @@ public class CopyFileTest {
         //parpare
 
         long time = System.currentTimeMillis();
+//        copyWithFile();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithBuffer();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithNIO();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+//
+//        copyWithNioDirect();
+//        Log.d("time:" + (System.currentTimeMillis() - time));
+//        time = System.currentTimeMillis();
+
+//        copyWithOkio();
+        Log.d("time:" + (System.currentTimeMillis() - time));
+
         copyWithFile();
         Log.d("FileInputStream take time:" + (System.currentTimeMillis() - time));
         time = System.currentTimeMillis();
@@ -93,45 +114,10 @@ public class CopyFileTest {
     }
 
     public static void copyOkio() throws IOException {
-        copyWithOkio2();
-    }
-
-    public static void copyWithOkio() throws IOException{
-        Source source = null;
-        Sink sink = null;
-        try {
-            File file = new File(BASE_PATH + "WPS2019.dmg");
-            source = Okio.source(file);
-            sink = Okio.sink(new File(BASE_PATH + "wps.cop5"));
-            Buffer buffer = new Buffer();
-            int read = 0;
-            while ((read = (int) source.read(buffer, 1024)) != -1) {
-                sink.write(buffer, read);
-                sink.flush();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            sink.close();
-            source.close();
-        }
-    }
-
-    public static void copyWithOkio2() throws IOException {
-        File file = new File(BASE_PATH + "WPS2019.dmg");
-        BufferedSource source = Okio.buffer(Okio.source(file));
-        BufferedSink sink = Okio.buffer(Okio.sink(new File(BASE_PATH + "wps.copy6")));
-        byte[] bytes = new byte[1024];
-        int read = 0;
-        while ((read = source.read(bytes)) != -1) {
-            sink.write(bytes, 0, read);
-        }
-        sink.flush();
-    }
-
-    private static void caculateBufferSegmentSize(BufferedSink bufferedSink) {
-        Buffer buffer = bufferedSink.buffer();
+        BufferedSource bufferedSource = Okio.buffer(Okio.source(new File(BASE_PATH + "ideaI.dmg")));
+        BufferedSink bufferedSink = Okio.buffer(Okio.sink(new File(BASE_PATH + "ideaI.copy5")));
+        bufferedSource.readAll(bufferedSink);
+        bufferedSink.flush();
 
     }
-
 }

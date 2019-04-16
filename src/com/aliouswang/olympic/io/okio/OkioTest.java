@@ -17,10 +17,14 @@ public class OkioTest {
         BufferedSink bufferedSink = Okio.buffer(sink);
         int read = -1;
         byte[] bytes = new byte[1024];
-        while ((read = bufferedSource.read(bytes)) != -1) {
+        Buffer buffer = new Buffer();
+        while (bufferedSource.read(bytes) != -1) {
             bufferedSink.write(bytes);
+//            sink.write(buffer, read);
+            bufferedSink.flush();
         }
 //        bufferedSink.flush();
+//        sink.flush();
 
     }
 
