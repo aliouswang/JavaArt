@@ -40,8 +40,8 @@ public class Okio_kata {
         long longValue = buffer.readLong();
         String utf8 = buffer.readUtf8();
 
-        System.out.println("str:" + string + "; int:" + intValue + ";byte:" + byteValue + "; long:" + longValue
-        + "; utf8:" + utf8);
+        System.out.println("str:" + string + ";\nint:" + intValue + ";\nbyte:" + byteValue + ";" +
+                "\nlong:" + longValue + "\nutf8:" + utf8);
 
         source.close();
     }
